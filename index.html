@@ -1,0 +1,85 @@
+<script src="https://cdn.jsdelivr.net/gh/netizenorg/netnet-standard-library/build/nn.min.js"></script>
+<body></body>
+<script>
+/* global nn */
+
+let face_size = 601 * (nn.width / 1001)
+let x_pos = nn.width * 0.08
+let y_pos = nn.height * 0.08
+
+let difficulty = 1
+let pimple_count = 0
+
+let text = nn.create('span')
+  .content('i need sigma skin from ohio to rizz my crush. please keep the acne away')
+  .addTo('body')
+
+let face = nn.create('span')
+      .content('😐')
+      .css({
+        position: 'absolute',
+        fontSize: face_size,
+        cursor: 'pointer',
+        left: x_pos,
+        top: y_pos
+      })
+      .addTo('body')
+
+function choose_face () {
+  if (pimple_count < 1){
+    return '😁'}
+  else if (pimple_count < 3){
+    return '🙂'
+  }
+  else if (pimple_count < 6){
+    return '😐'
+  }
+  else if (pimple_count < 9){
+    return '☹️'
+  }
+  else if (pimple_count < 19){
+    return '🥹'
+  }
+  else if (pimple_count < 99){
+    return '😭'
+  }
+  else{
+    return '😵'
+  }
+}
+
+function update_face () {
+  face.innerHTML = choose_face()
+}   
+  
+function remove_pimple (specific_pimple) {
+  specific_pimple.remove()
+  pimple_count += -1
+  update_face()
+}
+
+
+function createEmoji () {
+  setTimeout(createEmoji, (1000 + nn.random(-420,420)) * difficulty)
+  pimple_count += 1
+  difficulty -= 0.005
+  update_face()
+  const pimple = nn.create('span')
+    .content('🔴')
+    .css({
+      position: 'absolute',
+      fontSize: face_size * 0.05,
+      cursor: 'pointer',
+      left: nn.random(x_pos + face_size * 0.26, x_pos + face_size),
+      top: nn.random(y_pos + face_size * 0.38, y_pos + face_size)
+    })
+    .addTo('body')
+    .on('click', () => remove_pimple(pimple))
+}
+
+if (difficulty < 0.002)
+  {difficulty = 0.002}
+
+nn.on('load', createEmoji)
+
+</script>
